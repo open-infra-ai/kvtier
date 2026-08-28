@@ -1,4 +1,8 @@
-# ai-infra 转型工作区
+# kv-thermostat — 推理 KV 分层存储工作区
+
+> Inference KV cache tiering lab：LLM 推理 KV 在 L1(GPU HBM) / L2(host DRAM) /
+> L3(storage) 间的分层存储、回载与策略实验。取名"温度调节"：HiCache 按
+> hot/warm/cold 管理前缀，write_through/evict/load-back/prefetch 即一套温控回路。
 
 生信 HPC(C++/CPU 并行优化)→ AI-infra 推理优化方向的全职转型工作区。
 目标岗位:推理加速/部署优化(vLLM/SGLang 引擎组件层),2026 年内投递国内大厂/头部创业公司。
