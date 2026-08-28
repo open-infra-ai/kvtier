@@ -1,0 +1,32 @@
+## Motivation
+
+Part of #3244. The SLURM section currently only covers multi-node serving.
+Two things in that example are also broken in practice: `$SLURM_PROCID` is
+printed in the batch script where it is unset, and the port wait loop has no
+timeout, so a server that fails to start keeps the job spinning until its
+time limit.
+
+Complements #29991 (PD disaggregation + Apptainer examples); this PR does
+not touch those topics.
+
+## Modifications
+
+In `docs/docs/references/multi_node_deployment/multi_node.mdx`:
+
+- Print `$(hostname)` instead of the unset `$SLURM_PROCID`, and bound the
+  port wait loop to 10 minutes.
+- Add a single-node serving example: free-port selection, health check with
+  timeout, and a port-forward hint for login nodes.
+- Add an offline batch inference example using `sglang.Engine`, so batch
+  jobs exit when inference finishes.
+- Add short notes for shared clusters: port selection, NCCL/GLOO interface
+  pinning, and weight staging with `--download-dir`.
+
+Docs only; no code changes. The referenced example
+(`examples/runtime/engine/offline_batch_inference.py`) and the
+`--download-dir` flag are verified to exist.
+
+## Checklist
+
+- [x] Docs-only change
+- [x] No new pages, so no `docs.json` navigation change needed

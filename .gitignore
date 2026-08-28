@@ -1,0 +1,19 @@
+# Python caches and local test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environments and model material
+.venv/
+venv/
+env/
+models/
+hf-cache/
+.env
+
+# Generated benchmark result packages
+kv-tiering/bench/repro-31600/results/
+
+# Read-only upstream checkouts are nested repositories
+third_party/sglang/
+third_party/nano-vllm/

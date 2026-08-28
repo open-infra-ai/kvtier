@@ -1,0 +1,39 @@
+## Motivation
+
+Part of #20865. `kv_cache_dtype.py` and `allocation_sizing.py` under
+`srt/mem_cache/` have no unit tests today. Both are pure logic (no
+server/model/GPU needed), so CPU-only tests are enough.
+
+## Modifications
+
+Adds two test files under `test/registered/unit/mem_cache/`, 28 cases total:
+
+- `test_kv_cache_dtype.py`: `configure_kv_cache_dtype`, covering auto
+  detection with and without an FP8 quant config (CUDA and HIP paths),
+  explicit dtype spellings, the deprecated `fp4_e2m1` error, both `nvfp4`
+  availability branches, draft-worker dtype override, and the DFLASH fa4
+  override.
+- `test_allocation_sizing.py`: `page_aligned_decode_alloc_lens`, covering
+  page round-up, exact page boundary, never-shrink-below-allocated,
+  `page_size=1`, multi-request accumulation, and a reserve larger than one
+  page.
+
+No production code changes.
+
+## Accuracy Tests
+
+CPU-only local run:
+
+```
+27 passed, 1 skipped in 7.08s
+```
+
+The skip is the `nvfp4`-unavailable error path: this torch build already
+ships `float4_e2m1fn_x2`, so that path cannot trigger here; the
+supported-path side of the same branch is covered via a patched attribute.
+
+## Checklist
+
+- [x] `pre-commit run --all-files` passes
+- [x] Registered with `register_cpu_ci`; `scripts/lint/check_registered_tests.py` passes
+- [x] No production code modified

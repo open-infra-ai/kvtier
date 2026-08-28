@@ -1,0 +1,3 @@
+Correction after another pass through current `main`: much of the transfer telemetry already exists. #32388 added L2 H2D/D2H token and byte counters plus duration histograms, so bandwidth is derivable. `StorageMetricsCollector` also exposes L3 prefetch/backup bandwidth histograms, and `cached_tokens_total{cache_source=...}` covers hits by tier.
+
+The remaining gap I can confirm is failure classification. `UnifiedRadixCache` records some prefetch outcomes internally, but the default collector does not export them, and a `batch_exists` hit followed by a failed `batch_get*` is only logged. A low-cardinality counter with bounded `op` and `result` values would help. Keep `rid` in logs or traces, not Prometheus labels.
