@@ -1,4 +1,4 @@
-# kv-thermostat 后续开发计划
+# kv-hierarchy 后续开发计划
 
 更新时间：2026-08-28
 
