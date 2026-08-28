@@ -55,11 +55,12 @@
 > 小模型；服务端 sglang 尚未安装。用户已授权"安装 sglang 服务端 + 下载
 > Qwen2.5-1.5B-Instruct"。两项完成后按下列任务继续。
 >
-> 交接记录（2026-08-28）：旧机器上 sglang 服务端安装（目标 `~/.venvs/sglang-server`，
-> editable 安装 third_party/sglang/python）与 `Qwen2.5-1.5B-Instruct` 下载（目标
-> `~/models/`）已在后台启动，**均为机器本地产物、不随仓库走**；新环境请按
+> 交接记录（2026-08-28）：旧机器上 `Qwen2.5-1.5B-Instruct` 已下载完成
+> （`~/models/Qwen2.5-1.5B-Instruct`，2.9 GB）；sglang 服务端 editable 安装
+> **失败于 Rust 构建**——rustc 1.90.0 < 依赖要求的 1.92，修复与重试命令见
 > [`kv-tiering/bench/repro-31600/ENVIRONMENT.md`](kv-tiering/bench/repro-31600/ENVIRONMENT.md)
-> 重建。仓库侧 P0 已全部完成并随初始提交入库。
+> "服务端"一节。模型与 venv 均为机器本地产物、不随仓库走，新环境按 ENVIRONMENT.md
+> 重建。仓库侧 P0 已全部完成并入库。
 
 - [ ] 选择适配 RTX 3060 Laptop 6GB 的模型并记录绝对路径、权重 dtype 和上下文长度。
   - 当前选定：`Qwen2.5-1.5B-Instruct`（HF 格式，约 3 GB，目标路径 `~/models/`）。

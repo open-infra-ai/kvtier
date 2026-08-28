@@ -34,15 +34,19 @@
   `uv pip install -e third_party/sglang/python`，使安装内容与上表 commit 严格对应；
 - 该 commit 的 `pyproject.toml` 要求 `torch==2.13.0`、CUDA 13 系列 wheel
   （`flashinfer_python[cu13]` 等），与本机 CUDA UMD 13.3 匹配；
-- 状态：**尚未安装**。安装完成前，任何真实 GPU 运行都不可开始。
+- ⚠️ 2026-08-28 首次尝试失败，**失败点在 Rust 构建而非 Python 依赖**：editable
+  安装会触发 `rust/sglang-server` cdylib 编译，`rustpython-ruff 0.15.8` 系列依赖
+  要求 rustc ≥ 1.92，本机 rustc 为 1.90.0（日志：/tmp/sglang-install.log）。
+  修复路径：`rustup update stable`（或安装 ≥ 1.92 的 rustc）后重跑
+  `uv pip install -e third_party/sglang/python`；
+- 状态：**尚未安装成功**。安装完成前，任何真实 GPU 运行都不可开始。
 
-## 模型（待定）
+## 模型（已就绪，仅限本机）
 
-- 现状：本机仅有 `~/github/open-infra-ai/models/qwen2.5-0.5b-instruct-q4_k_m.gguf`
-  （GGUF 格式，SGLang 不支持直接加载）；
-- 计划：下载 HF 格式 `Qwen2.5-1.5B-Instruct`（约 3 GB）至 `~/models/`，适配 6 GB 显存
-  与 `--prefix-tokens 4096` 的驱逐流量设计；
-- 约束：模型路径、权重 dtype、上下文长度在 P1 门禁中记录后不得再变。
+- 已下载：`/home/shane/models/Qwen2.5-1.5B-Instruct`（HF 格式，2.9 GB，
+  含 `model.safetensors`；2026-08-28 由 `hf download` 获取）；
+- 注意：模型是机器本地产物，不随仓库走；新环境需重新下载；
+- P1 门禁启动服务时使用 `MODEL_PATH=/home/shane/models/Qwen2.5-1.5B-Instruct`。
 
 ## 验证入口
 
