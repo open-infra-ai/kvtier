@@ -1,9 +1,8 @@
-# kv-hierarchy — 推理 KV 分层存储工作区
+# kvtier — KV cache tiering for LLM inference（推理 KV 分层存储）
 
-> Inference KV cache hierarchy lab：LLM 推理 KV 在 L1(GPU HBM) / L2(host DRAM) /
-> L3(storage) 间的分层存储、回载与策略实验。对应 SGLang 的 HiCache
-> （`--enable-hierarchical-cache`）与 vLLM KV offloading；HPC 的 memory hierarchy
-> 功力在 AI 推理场景的直接迁移。
+> LLM 推理 KV 在 L1(GPU HBM) / L2(host DRAM) / L3(storage) 间的分层存储、
+> 回载与策略实验。对应 SGLang 的 HiCache（`--enable-hierarchical-cache`）
+> 与 vLLM KV offloading；HPC 的 memory hierarchy 功力在 AI 推理场景的直接迁移。
 
 生信 HPC(C++/CPU 并行优化)→ AI-infra 推理优化方向的全职转型工作区。
 目标岗位:推理加速/部署优化(vLLM/SGLang 引擎组件层),2026 年内投递国内大厂/头部创业公司。
