@@ -28,25 +28,30 @@
 - 验证：`make test`（根目录）自动优先使用该 venv；PYTHONDONTWRITEBYTECODE=1 下
   14 项离线测试通过，且不写入任何 `__pycache__`/`.pyc`。
 
-## 服务端（待构建）
+## 服务端（P1 已构建完成）
 
-- 计划方式：`uv venv ~/.venvs/sglang-server`，从本地浅克隆以 editable 方式安装
-  `uv pip install -e third_party/sglang/python`，使安装内容与上表 commit 严格对应；
-- 该 commit 的 `pyproject.toml` 要求 `torch==2.13.0`、CUDA 13 系列 wheel
-  （`flashinfer_python[cu13]` 等），与本机 CUDA UMD 13.3 匹配；
-- ⚠️ 2026-08-28 首次尝试失败，**失败点在 Rust 构建而非 Python 依赖**：editable
-  安装会触发 `rust/sglang-server` cdylib 编译，`rustpython-ruff 0.15.8` 系列依赖
-  要求 rustc ≥ 1.92，本机 rustc 为 1.90.0（日志：/tmp/sglang-install.log）。
-  修复路径：`rustup update stable`（或安装 ≥ 1.92 的 rustc）后重跑
-  `uv pip install -e third_party/sglang/python`；
-- 状态：**尚未安装成功**。安装完成前，任何真实 GPU 运行都不可开始。
+- 方式：`uv venv ~/.venvs/sglang-server`，editable 安装
+  `uv pip install -e third_party/sglang/python`，与上表 commit 严格对应；
+- ⚠️ 首次尝试失败于 Rust 构建（rustc 1.90.0 < rustpython-ruff 0.15.8 要求的 1.92）；
+  **2026-08-28 已修复**：`rustup update stable` → rustc 1.98.0，重装成功；
+- 验证：`import sglang` 报告版本 `0.0.0.dev2+g6afee75f9`（setuptools-scm 从浅克隆
+  git 元数据生成，`+g6afee75f9` 即上表 commit 短哈希，可追溯性成立）；
+  torch 2.13.0+cu130，CUDA 可用，识别 RTX 3060 Laptop；
+- venv 体积 8.3 GB；uv 缓存 17 GB（含 torch/cu13 全家桶，重装无需再下载）；
+- **P0-2 验收达成**：`--sglang-commit 6afee75f918f3d59bdae7d619ba26b0ca22b1354`
+  与实际服务构建来源一致。
 
-## 模型（已就绪，仅限本机）
+## 模型（P1-1 已选定）
 
-- 已下载：`/home/shane/models/Qwen2.5-1.5B-Instruct`（HF 格式，2.9 GB，
-  含 `model.safetensors`；2026-08-28 由 `hf download` 获取）；
-- 注意：模型是机器本地产物，不随仓库走；新环境需重新下载；
-- P1 门禁启动服务时使用 `MODEL_PATH=/home/shane/models/Qwen2.5-1.5B-Instruct`。
+- **选定**：`/home/shane/models/Qwen2.5-1.5B-Instruct`（HF 原版 BF16，2.9 GB，
+  `model.safetensors`；2026-08-28 由 `hf download` 获取）；
+- 权重 dtype：**bfloat16**（config `torch_dtype`）；上下文长度：**32768**
+  （`max_position_embeddings`）；架构 Qwen2ForCausalLM，28 层 × 2 KV heads；
+- 每 token KV 体积 ≈ 28 层 × 2 KV heads × 128 head_dim × 2(K+V) × 2B = **28 KB/token**，
+  4096-token 前缀 ≈ 117 MB；
+- 显存约束（2026-08-28 实测）：dGPU 有 ~3.4 GB 无法归因的图形占用（Wayland/浏览器，
+  进程表不可见），启动前由用户释放；`MEM_FRACTION` 与 `HICACHE_RATIO` 按启动时实测
+  空闲显存与系统内存（仅 9 GB，host pool 需限额）现场确定并记录于结果包。
 
 ## 验证入口
 
