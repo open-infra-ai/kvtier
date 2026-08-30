@@ -143,7 +143,7 @@ Thanks again — the fix itself is solid, and the reasoning-content handling
 ```bash
 # 一遍确认正文无误后,用 --comment 模式发布(不会 approve / request changes)
 gh pr review 35443 --repo sgl-project/sglang --comment \
-  --body "$(cat /home/shane/github/ai-infra/docs/pr-35443-review-draft.md  | sed -n '/^## Review comment body/,/^## 发布命令/p' | sed '1d;$d')"
+  --body "$(cat /home/shane/github/kvtier/docs/pr-35443-review-draft.md  | sed -n '/^## Review comment body/,/^## 发布命令/p' | sed '1d;$d')"
 
 # 若想先看一眼渲染效果,可先输出到终端:
 # sed -n '/^## Review comment body/,/^## 发布命令/p' pr-35443-review-draft.md | sed '1d;$d'
