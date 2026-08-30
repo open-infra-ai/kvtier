@@ -35,7 +35,7 @@
 基准客户端只依赖 Python 3.10+ 和固定版本的 `requests`。建议为客户端建立隔离环境：
 
 ```bash
-cd kv-tiering/bench/repro-31600
+cd bench/repro-31600
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt

@@ -12,7 +12,7 @@ hf-cache/
 .env
 
 # Generated benchmark result packages
-kv-tiering/bench/repro-31600/results/
+bench/repro-31600/results/
 
 # Read-only upstream checkouts are nested repositories
 third_party/sglang/

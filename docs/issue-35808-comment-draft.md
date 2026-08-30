@@ -34,7 +34,7 @@ Qwen 初稿漏查了已经合入的 HiCache 可观测能力，并把不同的预
 ```bash
 gh api --method PATCH \
   repos/sgl-project/sglang/issues/comments/5396206747 \
-  -F body=@kv-tiering/docs/issue-35808-comment-body.txt
+  -F body=@docs/issue-35808-comment-body.txt
 ```
 
 不要使用 `gh issue comment`，该命令会新增重复评论。

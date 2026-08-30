@@ -29,10 +29,13 @@
   未建远程、未推送（远程归属待用户决定）。
 - [x] 2026-08-28（P0-2）：确定 SGLang 构建基线 `6afee75f918f3d59bdae7d619ba26b0ca22b1354`
   （third_party 浅克隆），Python 3.12.3 与安装方式（uv + editable）记录于
-  [`kv-tiering/bench/repro-31600/ENVIRONMENT.md`](kv-tiering/bench/repro-31600/ENVIRONMENT.md)。
+  [`bench/repro-31600/ENVIRONMENT.md`](bench/repro-31600/ENVIRONMENT.md)。
 - [x] 2026-08-28（P0-3）：用 uv 创建隔离客户端环境并安装 `requests==2.31.0`；
   `Makefile` 改为自动优先使用 `.venv/bin/python`；`make test` 14 项在隔离环境通过，
   零 Python 字节码写入。
+- [x] 2026-08-30：目录整理——`kv-tiering/` 摊平至根目录（docs/bench/patches 上提），
+  贡献草稿归入 `contrib/minisgl/` 并补状态 README，根 README 与 kv-tiering README 合并
+  为一本；仅本地提交，未推送。
 
 ## 后续任务
 
@@ -41,10 +44,10 @@
 - [x] 审阅当前未跟踪文件，确认根级 Git 初始内容和远程仓库归属。（2026-08-28 完成）
   - 验收：明确保留的文件、忽略的上游目录和结果目录；只在用户要求时暂存、提交或推送。
 - [x] 选择一个干净且明确的 SGLang commit，记录源码路径、commit、Python 版本、镜像或
-  安装方式。（2026-08-28 完成，见 `kv-tiering/bench/repro-31600/ENVIRONMENT.md`）
+  安装方式。（2026-08-28 完成，见 `bench/repro-31600/ENVIRONMENT.md`）
   - 验收：启动命令中的服务来源与基准参数中的 `--sglang-commit` 一致，禁止只记录
     `latest` 或未标记的 `main`。
-- [x] 创建隔离的基准客户端环境并按 `kv-tiering/bench/repro-31600/requirements.txt`
+- [x] 创建隔离的基准客户端环境并按 `bench/repro-31600/requirements.txt`
   安装依赖。（2026-08-28 完成；uv venv + `requests==2.31.0`；`make test` 已改为
   自动优先使用 `.venv`）
   - 验收：`make test` 在隔离环境中通过，且不写入 Python 字节码。
@@ -58,7 +61,7 @@
 > 交接记录（2026-08-28）：旧机器上 `Qwen2.5-1.5B-Instruct` 已下载完成
 > （`~/models/Qwen2.5-1.5B-Instruct`，2.9 GB）；sglang 服务端 editable 安装
 > **失败于 Rust 构建**——rustc 1.90.0 < 依赖要求的 1.92，修复与重试命令见
-> [`kv-tiering/bench/repro-31600/ENVIRONMENT.md`](kv-tiering/bench/repro-31600/ENVIRONMENT.md)
+> [`bench/repro-31600/ENVIRONMENT.md`](bench/repro-31600/ENVIRONMENT.md)
 > "服务端"一节。模型与 venv 均为机器本地产物、不随仓库走，新环境按 ENVIRONMENT.md
 > 重建。仓库侧 P0 已全部完成并入库。
 
@@ -103,14 +106,14 @@
 
 ```bash
 make test
-cd kv-tiering/bench/repro-31600
+cd bench/repro-31600
 python3 workload.py --dry-run
 python3 validate_results.py results/results-<UTC>.json
 ```
 
 ## 暂不执行
 
-- 不从零开发完整 mini 推理引擎，不为改名或搬目录消耗主线时间。
+- 不从零开发完整 mini 推理引擎。
 - 不在没有真实 GPU 结果和审计包时宣称性能提升。
 - 不把本机单卡 L2 微基准写成 #31600 完整复现。
 - 不默认下载大模型、租用云 GPU、修改 `third_party` 上游源码或发布 PR。

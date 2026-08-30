@@ -23,7 +23,7 @@
 
 ## 基准客户端（已就绪）
 
-- 位置：`kv-tiering/bench/repro-31600/.venv`（uv venv，CPython 3.12.3）
+- 位置：`bench/repro-31600/.venv`（uv venv，CPython 3.12.3）
 - 依赖：`requirements.txt` → `requests==2.31.0`
 - 验证：`make test`（根目录）自动优先使用该 venv；PYTHONDONTWRITEBYTECODE=1 下
   14 项离线测试通过，且不写入任何 `__pycache__`/`.pyc`。
@@ -57,5 +57,5 @@
 
 ```bash
 make test          # 离线 14 项测试（隔离环境、零字节码）
-cd kv-tiering/bench/repro-31600 && python3 workload.py --dry-run
+cd bench/repro-31600 && python3 workload.py --dry-run
 ```

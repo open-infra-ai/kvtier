@@ -22,7 +22,7 @@
 | common.py / utils.py | 分别已被 #31990、#27934 覆盖 | 撞车排除 |
 
 **选题理由**:
-1. 与 HiCache 主线协同 —— `--kv-cache-dtype` 正是本仓库 kv-tiering 实验(#31600 复现脚本)的
+1. 与 HiCache 主线协同 —— `--kv-cache-dtype` 正是本仓库 kvtier 实验(#31600 复现脚本)的
    变量之一,HiCache fp8 KV 的自动探测逻辑就在这里;`allocation_sizing` 的整页分配口径是
    HiCache host 池/spec v2 分配的前置常识。
 2. 纯粹、零 mock 风险:`configure_kv_cache_dtype` 无状态,所有分支可通过 keyword 参数 + 两个
@@ -88,7 +88,7 @@ python -m py_compile test/...                                        # 通过
 
 ## 4. 产物
 
-- patch:`/home/shane/github/ai-infra/kv-tiering/patches/20865-mem-cache-tests.patch`
+- patch:`/home/shane/github/ai-infra/patches/20865-mem-cache-tests.patch`
   (2 新文件,295 行插入;`git add -N` 后 `git diff main` 导出)
 - 分支:third_party/sglang `test-mem-cache-coverage`(未 push)
 - 本地依赖(venv /tmp/sglang-venv):torch-cpu 2.13.0、transformers==5.12.1(仓库 pin)、

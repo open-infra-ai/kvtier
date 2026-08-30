@@ -3,7 +3,7 @@
 > 状态:草稿,仅供审核。发布前请用户确认,然后执行文末命令。
 > 对象:`sgl-project/sglang` PR #35443 "Fix reasoning metrics and add TPOT to bench_multiturn"
 > 位置:benchmark/hicache/bench_multiturn.py、python/sglang/test/kits/cache_hit_kit.py、test/registered/unit/test_cache_hit_kit_metrics.py
-> 2026-08-24 更新:按独立审查(见 kv-tiering/docs/05-issue-35438-analysis.md)并入第一重点
+> 2026-08-24 更新:按独立审查(见 docs/05-issue-35438-analysis.md)并入第一重点
 > —— reasoning 丢弃导致多轮 cache_hit_rate 失真;顺序:① reasoning 丢弃 ② getattr ③ TPOT 分母。
 
 ---
@@ -143,7 +143,7 @@ Thanks again — the fix itself is solid, and the reasoning-content handling
 ```bash
 # 一遍确认正文无误后,用 --comment 模式发布(不会 approve / request changes)
 gh pr review 35443 --repo sgl-project/sglang --comment \
-  --body "$(cat /home/shane/github/ai-infra/kv-tiering/docs/pr-35443-review-draft.md  | sed -n '/^## Review comment body/,/^## 发布命令/p' | sed '1d;$d')"
+  --body "$(cat /home/shane/github/ai-infra/docs/pr-35443-review-draft.md  | sed -n '/^## Review comment body/,/^## 发布命令/p' | sed '1d;$d')"
 
 # 若想先看一眼渲染效果,可先输出到终端:
 # sed -n '/^## Review comment body/,/^## 发布命令/p' pr-35443-review-draft.md | sed '1d;$d'
