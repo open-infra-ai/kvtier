@@ -1,28 +1,28 @@
 # kvtier — KV cache tiering for LLM inference（推理 KV 分层存储）
 
-> LLM 推理 KV 在 L1(GPU HBM) / L2(host DRAM) / L3(storage) 间的分层存储、
+> LLM 推理 KV 在 L1 (GPU HBM) / L2 (host DRAM) / L3 (storage) 间的分层存储、
 > 回载与策略实验。对应 SGLang 的 HiCache（`--enable-hierarchical-cache`）
 > 与 vLLM KV offloading；HPC 的 memory hierarchy 功力在 AI 推理场景的直接迁移。
 
-生信 HPC(C++/CPU 并行优化)→ AI-infra 推理优化方向的全职转型工作区。
-目标岗位:推理加速/部署优化(vLLM/SGLang 引擎组件层),2026 年内投递国内大厂/头部创业公司。
+本仓是私有研究孵化器，用于把上游源码阅读收敛为可运行实验、可审计结果和
+上游贡献。在达到本文的公开门槛前，它不进入 `open-infra-ai` 公开作品集的
+状态注册表。
 
-## 目录结构
+## 当前目录结构
 
-- `docs/` — 主线文档:SGLang/vLLM 架构分析、上游 PR/issue 草稿
+- `docs/` — SGLang/vLLM 架构分析、上游 PR/issue 工作记录
 - `bench/repro-31600/` — 单卡 HiCache L2 微基准（客户端、结果审计器、离线测试）
-- `patches/` — 上游补丁与差异文件
-- `contrib/` — 对上游项目的贡献草稿（评审评论、issue 提案），当前为 minisgl
+- `patches/` — 按上游 commit 绑定的补丁与差异文件
+- `contrib/` — 上游贡献的最小复现、测试或草案，当前包含 minisgl
 - `third_party/` — 只读研读的上游源码浅克隆（sglang 等），不入库
-- 学习笔记与练习代码后续按需新增目录
 
 ## 战略主线
 
-1. **上游贡献**:主攻 SGLang(切入点 HiCache 子系统),vLLM 作为第二熟悉对象
-2. **差异化项目**:CPU 侧 KV 分层存储优化 —— HPC 内存层级优化功力的直接迁移
-3. **知识体系**:推理原理 + 引擎源码 + 适量 CUDA(会读、会 profile、会写中等 kernel)
+1. **上游贡献**：主攻 SGLang（切入点为 HiCache 子系统），vLLM 作为第二熟悉对象。
+2. **差异化项目**：CPU 侧 KV 分层存储优化，将 HPC 内存层级优化经验迁移到推理场景。
+3. **知识体系**：推理原理 + 引擎源码 + 适量 CUDA（会读、会 profile、会写中等 kernel）。
 
-完整 24 周路线图见 `~/.claude/plans/bwa-gatk-ai-infra-c-kernel-vllm-sglang-glowing-bee.md`。
+阶段任务、验收条件和停止条件见 [`PLAN.md`](PLAN.md)。
 
 ## 完成边界
 
@@ -31,6 +31,15 @@
   EAGLE 场景；
 - 只有真实 GPU 运行、缓存路径核验和结果包审计完成后，才可以对外给出性能结论；
 - 上游 issue/PR 的状态会变化，公开评论前必须再次核对当前 `main` 和重复工作。
+
+## 公开门槛
+
+只有同时满足以下条件，才将本仓转为公开作品：
+
+1. 完成至少一组真实 GPU 实验，并通过结果包审计。
+2. 固定上游 commit、模型、硬件、启动参数和原始日志，证明结论可复现。
+3. 获得至少一个外部可验证的上游结果，如合入的 PR 或由 maintainer 确认的复现/修复。
+4. 公开前移除个人绝对路径、发布命令草稿和已失效的上游状态描述。
 
 ## 当前技术基线
 
