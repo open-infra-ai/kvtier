@@ -4,9 +4,14 @@
 > 回载与策略实验。对应 SGLang 的 HiCache（`--enable-hierarchical-cache`）
 > 与 vLLM KV offloading；HPC 的 memory hierarchy 功力在 AI 推理场景的直接迁移。
 
-本仓是私有研究孵化器，用于把上游源码阅读收敛为可运行实验、可审计结果和
-上游贡献。在达到本文的公开门槛前，它不进入 `open-infra-ai` 公开作品集的
-状态注册表。
+> **项目状态**：**active**（研究演进中；尚无完成审计的 GPU 结果包，亦无已
+> 合入的上游 PR）。权威状态注册表见
+> [open-infra-ai/open-infra-ai](https://github.com/open-infra-ai/open-infra-ai)。
+
+本仓是研究孵化器：把上游源码阅读收敛为可运行实验、可审计结果和上游贡献。
+2026-10-25 经所有者决定提前转为公开并登记入组织状态注册表（`active`）；
+下方「公开门槛与现状」诚实记录各条达成状态，公开决策记录见
+[open-infra-ai 仓笔记](https://github.com/open-infra-ai/open-infra-ai/blob/master/.agents/notes/implemented/process/2026-10-25-kvtier-radar-publication.md)。
 
 ## 当前目录结构
 
@@ -32,14 +37,22 @@
 - 只有真实 GPU 运行、缓存路径核验和结果包审计完成后，才可以对外给出性能结论；
 - 上游 issue/PR 的状态会变化，公开评论前必须再次核对当前 `main` 和重复工作。
 
-## 公开门槛
+## 公开门槛与现状
 
-只有同时满足以下条件，才将本仓转为公开作品：
+本仓原计划满足以下条件后才转公开；2026-10-25 经所有者决定提前公开，
+各条现状诚实标注：
 
-1. 完成至少一组真实 GPU 实验，并通过结果包审计。
-2. 固定上游 commit、模型、硬件、启动参数和原始日志，证明结论可复现。
-3. 获得至少一个外部可验证的上游结果，如合入的 PR 或由 maintainer 确认的复现/修复。
-4. 公开前移除个人绝对路径、发布命令草稿和已失效的上游状态描述。
+1. 完成至少一组真实 GPU 实验，并通过结果包审计——**未达成**：客户端、
+   结果审计器与离线测试就绪，尚无真实 GPU 运行。
+2. 固定上游 commit、模型、硬件、启动参数和原始日志——**部分就绪**：审计器
+   已要求记录 40 位 SGLang commit，真实运行尚未发生。
+3. 至少一个外部可验证的上游结果——**部分达成**：
+   [PR #36116](https://github.com/sgl-project/sglang/pull/36116) 处于 OPEN、
+   [PR #36115](https://github.com/sgl-project/sglang/pull/36115) 未合入关闭、
+   [#35808 评论](https://github.com/sgl-project/sglang/issues/35808#issuecomment-5396206747)
+   已发布；尚无已合入的 PR。
+4. 移除个人绝对路径——2026-10-25 公开批次已清理（发布命令草稿保留在
+   `docs/` 中作为流程记录，路径已相对化）。
 
 ## 当前技术基线
 

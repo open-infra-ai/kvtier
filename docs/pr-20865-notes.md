@@ -88,7 +88,7 @@ python -m py_compile test/...                                        # 通过
 
 ## 4. 产物
 
-- patch:`/home/shane/github/open-infra-ai/kvtier/patches/20865-mem-cache-tests.patch`
+- patch:`patches/20865-mem-cache-tests.patch`
   (2 新文件,295 行插入;`git add -N` 后 `git diff main` 导出)
 - 分支:third_party/sglang `test-mem-cache-coverage`(未 push)
 - 本地依赖(venv /tmp/sglang-venv):torch-cpu 2.13.0、transformers==5.12.1(仓库 pin)、

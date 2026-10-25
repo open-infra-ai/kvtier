@@ -43,7 +43,7 @@
 
 ## 模型（P1-1 已选定）
 
-- **选定**：`/home/shane/models/Qwen2.5-1.5B-Instruct`（HF 原版 BF16，2.9 GB，
+- **选定**：`$HOME/models/Qwen2.5-1.5B-Instruct`（HF 原版 BF16，2.9 GB，
   `model.safetensors`；2026-08-28 由 `hf download` 获取）；
 - 权重 dtype：**bfloat16**（config `torch_dtype`）；上下文长度：**32768**
   （`max_position_embeddings`）；架构 Qwen2ForCausalLM，28 层 × 2 KV heads；

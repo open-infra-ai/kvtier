@@ -1,6 +1,7 @@
 # Agent Note: 公开门槛——达成前不进入 open-infra-ai 状态注册表
 
 Status: implemented
+Archived: 2026-10-25
 
 ## Problem
 
