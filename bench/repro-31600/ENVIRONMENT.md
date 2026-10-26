@@ -1,9 +1,34 @@
 # 环境记录（P0：版本与环境可追溯性）
 
-> 更新时间：2026-08-28。本文件记录构建与运行本基准所用的所有可追溯信息。
+> 更新时间：2026-10-26。本文件记录构建与运行本基准所用的所有可追溯信息。
 > 正式 GPU 运行时，`workload.py --sglang-commit` 必须与下文"服务端"一节的 commit 一致。
 
-## 硬件
+## 2026-10-26 实际运行（WSL2 / RTX 3060 Laptop）
+
+- OS：WSL2，Linux 6.18.54.1-microsoft-standard-WSL2；
+- GPU：RTX 3060 Laptop 6144 MiB，驱动 610.88（CUDA UMD 13.3），sm_86；
+- 服务端：SGLang `6afee75f918f3d59bdae7d619ba26b0ca22b1354`
+  （`0.0.0.dev2+g6afee75f9`）+ 本地补丁
+  `evidence/2026-10-26-wsl2-l2-baseline/sglang-43375-local.patch`
+  （PR #43375 的 WSL2 host 分配部分，sha256
+  `d9e99574df7ae920619a292059f2ce6cb486b12f8bb7342b92c1e93e7530df68`）；
+- 模型：`$HOME/models/Qwen2.5-0.5B-Instruct`，BF16，
+  `model.safetensors` 988,097,824 B，
+  sha256 `fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe`；
+- 配置：`MEM_FRACTION=0.28`（设备池 33,744 tokens）、`HICACHE_RATIO=2.8`
+  （host pool 94,484 tokens / 1.16 GB）、`HICACHE_IO=kernel`、
+  `HICACHE_LAYOUT=page_first`、`DISABLE_CUDA_GRAPH=1`、N=6；
+- host 预算：SGLang `host_memory_budget_bytes()` = `psutil.available - 10 GiB`
+  ≈ 1.18 GB，因此 host pool 不能按默认 ratio 4 放大；
+- 结果：`evidence/2026-10-26-wsl2-l2-baseline/results.json`，
+  R/P TTFT 中位比 0.215，审计通过；
+- WSL2 根因：`cudaHostRegister` 后 host 地址与 `cudaHostGetDevicePointer`
+  返回值不一致，`kernel` IO 后端直接使用 host 地址会触发 illegal access；
+  修复后改用 torch pinned memory（地址恒等）。
+
+## 2026-08-28 构建基线（历史记录）
+
+### 硬件
 
 - GPU：NVIDIA GeForce RTX 3060 Laptop，6144 MiB
 - 驱动：610.57.01（KMD 610.88），CUDA UMD 13.3
@@ -43,8 +68,13 @@
 
 ## 模型（P1-1 已选定）
 
-- **选定**：`$HOME/models/Qwen2.5-1.5B-Instruct`（HF 原版 BF16，2.9 GB，
-  `model.safetensors`；2026-08-28 由 `hf download` 获取）；
+- **2026-08-28 原定**：`$HOME/models/Qwen2.5-1.5B-Instruct`（HF 原版 BF16，
+  2.9 GB，`model.safetensors`；2026-08-28 由 `hf download` 获取）；
+- **2026-10-26 实际**：改用 `$HOME/models/Qwen2.5-0.5B-Instruct` 完成运行。
+  原因：Windows 桌面侧占用约 1.97 GB 显存，1.5B 权重加载后 SGLang 报告
+  KV cache 最低预算需 `mem-fraction-static > 0.827`，物理空闲显存不足；
+  0.5B 为同家族、同 tokenizer 接口，可在 6 GB 卡上稳定运行。其绝对 TTFT
+  不能外推到 1.5B/7B；
 - 权重 dtype：**bfloat16**（config `torch_dtype`）；上下文长度：**32768**
   （`max_position_embeddings`）；架构 Qwen2ForCausalLM，28 层 × 2 KV heads；
 - 每 token KV 体积 ≈ 28 层 × 2 KV heads × 128 head_dim × 2(K+V) × 2B = **28 KB/token**，

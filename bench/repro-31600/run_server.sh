@@ -8,7 +8,15 @@ PORT="${PORT:-30000}"
 MEM_FRACTION="${MEM_FRACTION:-0.78}"
 HICACHE_RATIO="${HICACHE_RATIO:-4.0}"
 HICACHE_IO="${HICACHE_IO:-kernel}"
+HICACHE_LAYOUT="${HICACHE_LAYOUT:-page_first}"
 KV_CACHE_DTYPE="${KV_CACHE_DTYPE:-auto}"
+DISABLE_CUDA_GRAPH="${DISABLE_CUDA_GRAPH:-0}"
+
+EXTRA_ARGS=()
+if [ "$DISABLE_CUDA_GRAPH" = "1" ]; then
+  # 小显存 / 小内存单卡上跳过 graph 捕获：省下 host 预留并缩短启动。
+  EXTRA_ARGS+=(--disable-cuda-graph)
+fi
 
 exec python3 -m sglang.launch_server \
   --model-path "$MODEL_PATH" \
@@ -18,8 +26,10 @@ exec python3 -m sglang.launch_server \
   --enable-hierarchical-cache \
   --hicache-host-memory-mode cache \
   --hicache-ratio "$HICACHE_RATIO" \
+  --hicache-mem-layout "$HICACHE_LAYOUT" \
   --hicache-write-policy write_through \
   --hicache-io-backend "$HICACHE_IO" \
   --enable-metrics \
   --enable-cache-report \
+  "${EXTRA_ARGS[@]}" \
   --log-level info

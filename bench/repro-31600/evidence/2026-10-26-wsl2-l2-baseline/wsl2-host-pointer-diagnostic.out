@@ -1,0 +1,4 @@
+torch=2.13.0+cu130 cuda=13.0
+gpu=NVIDIA GeForce RTX 3060 Laptop GPU cc=(8, 6)
+cudaHostRegister: rc_register=0 rc_get_device_pointer=0 host=0x7deea800c040 dev=0x204c00040 identity=False
+torch pin_memory: rc_get_device_pointer=0 host=0x204c00000 dev=0x204c00000 identity=True

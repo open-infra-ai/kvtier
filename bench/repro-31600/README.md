@@ -96,6 +96,8 @@ MEM_FRACTION=0.75 HICACHE_RATIO=5.0 HICACHE_IO=direct \
 - `summary.l2_slower_than_cold_in_this_run` 只描述本机、本模型、本次参数；
 - `metrics.counter_deltas` 用于交叉核对 D2H backup、device eviction 和 H2D load-back。
 
-在真实 GPU 上跑完并审核 JSON 前，这里只有可执行脚手架，没有性能结论。即使比值
-大于 1，也不应在 #31600 下声称“已复现”；真正复现需要尽量匹配原始模型、EAGLE、
-L3、并行配置与 decode 指标。
+在真实 GPU 上跑完并审核 JSON 后才能给出性能结论。目前有一组已审计结果：
+[`evidence/2026-10-26-wsl2-l2-baseline/`](evidence/2026-10-26-wsl2-l2-baseline/)
+（WSL2 / RTX 3060 Laptop / Qwen2.5-0.5B，6 轮，R/P 中位比 0.215）。该结果只描述
+该机、该模型、该配置，不代表 #31600；上游合入 PR
+[#43375](https://github.com/sgl-project/sglang/pull/43375) 后应以新 commit 重跑。

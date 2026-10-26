@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "benchmark": "sglang-hicache-l2-single-gpu",
+  "run_id": "20261026T090052Z",
+  "started_at_utc": "2026-10-26T09:00:52.781281+00:00",
+  "environment": {
+    "client_hostname": "<host>",
+    "client_platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "client_python": "3.12.3",
+    "server_host": "127.0.0.1",
+    "local_gpu_inventory": [
+      "NVIDIA GeForce RTX 3060 Laptop GPU, 610.88, 6144"
+    ]
+  },
+  "args": {
+    "host": "127.0.0.1",
+    "port": 30000,
+    "num_trials": 8,
+    "prefix_tokens": 4096,
+    "tail_tokens": 128,
+    "max_new_tokens": 1,
+    "evict_request_tokens": 1024,
+    "evict_factor": 1.1,
+    "evict_total_tokens": null,
+    "backup_wait": 10.0,
+    "min_host_hit_ratio": 0.9,
+    "seed": 31600,
+    "timeout": 600.0,
+    "sglang_commit": "6afee75f918f3d59bdae7d619ba26b0ca22b1354",
+    "output_dir": "bench/repro-31600/results",
+    "dry_run": false
+  },
+  "phases": {
+    "W": [
+      {
+        "rid": "W-20261026T090052Z-000",
+        "cache_salt": "l2-20261026T090052Z-000",
+        "input_token_count": 4224,
+        "ttft_s": 10.63495102399611,
+        "total_s": 10.635558064997895,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-001",
+        "cache_salt": "l2-20261026T090052Z-001",
+        "input_token_count": 4224,
+        "ttft_s": 0.4436057709972374,
+        "total_s": 0.4437055950111244,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-002",
+        "cache_salt": "l2-20261026T090052Z-002",
+        "input_token_count": 4224,
+        "ttft_s": 0.33344862499507144,
+        "total_s": 0.3335745969961863,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-003",
+        "cache_salt": "l2-20261026T090052Z-003",
+        "input_token_count": 4224,
+        "ttft_s": 0.3459812890068861,
+        "total_s": 0.3461018550005974,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-004",
+        "cache_salt": "l2-20261026T090052Z-004",
+        "input_token_count": 4224,
+        "ttft_s": 0.3303535559971351,
+        "total_s": 0.3304783769999631,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-005",
+        "cache_salt": "l2-20261026T090052Z-005",
+        "input_token_count": 4224,
+        "ttft_s": 0.38922307098982856,
+        "total_s": 0.3893211260001408,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-006",
+        "cache_salt": "l2-20261026T090052Z-006",
+        "input_token_count": 4224,
+        "ttft_s": 0.4001500080048572,
+        "total_s": 0.4002528380078729,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "W-20261026T090052Z-007",
+        "cache_salt": "l2-20261026T090052Z-007",
+        "input_token_count": 4224,
+        "ttft_s": 0.3322742210002616,
+        "total_s": 0.33237425099650864,
+        "output_token_events": 1,
+        "prompt_tokens": 4224,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      }
+    ],
+    "E": [
+      {
+        "rid": "E-20261026T090052Z-0000",
+        "cache_salt": "evict-20261026T090052Z-0000",
+        "input_token_count": 1024,
+        "ttft_s": 0.39726261999749113,
+        "total_s": 0.39736651499697473,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0001",
+        "cache_salt": "evict-20261026T090052Z-0001",
+        "input_token_count": 1024,
+        "ttft_s": 0.10108374898845796,
+        "total_s": 0.10119645699160174,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0002",
+        "cache_salt": "evict-20261026T090052Z-0002",
+        "input_token_count": 1024,
+        "ttft_s": 0.09479555899451952,
+        "total_s": 0.09488984799827449,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0003",
+        "cache_salt": "evict-20261026T090052Z-0003",
+        "input_token_count": 1024,
+        "ttft_s": 0.09000688900414389,
+        "total_s": 0.09015906200511381,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0004",
+        "cache_salt": "evict-20261026T090052Z-0004",
+        "input_token_count": 1024,
+        "ttft_s": 0.08955117499863263,
+        "total_s": 0.08966129898908548,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0005",
+        "cache_salt": "evict-20261026T090052Z-0005",
+        "input_token_count": 1024,
+        "ttft_s": 0.09474395800498314,
+        "total_s": 0.09484212100505829,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0006",
+        "cache_salt": "evict-20261026T090052Z-0006",
+        "input_token_count": 1024,
+        "ttft_s": 0.09107104799477383,
+        "total_s": 0.09123447599995416,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0007",
+        "cache_salt": "evict-20261026T090052Z-0007",
+        "input_token_count": 1024,
+        "ttft_s": 0.09311410700320266,
+        "total_s": 0.09320991500862874,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      },
+      {
+        "rid": "E-20261026T090052Z-0008",
+        "cache_salt": "evict-20261026T090052Z-0008",
+        "input_token_count": 1024,
+        "ttft_s": 0.095012054007384,
+        "total_s": 0.0951097840006696,
+        "output_token_events": 1,
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "cached_tokens": 0,
+        "cached_tokens_details": {
+          "device": 0,
+          "host": 0,
+          "storage": 0
+        }
+      }
+    ]
+  },
+  "status": "failed",
+  "server": {
+    "version": "0.0.0.dev2+g6afee75f9",
+    "model_path": "<home>/models/Qwen2.5-0.5B-Instruct",
+    "served_model_name": "<home>/models/Qwen2.5-0.5B-Instruct",
+    "tokenizer_path": "<home>/models/Qwen2.5-0.5B-Instruct",
+    "load_format": "auto",
+    "dtype": "auto",
+    "kv_cache_dtype": "auto",
+    "mem_fraction_static": 0.22,
+    "tp_size": 1,
+    "dp_size": 1,
+    "pp_size": 1,
+    "attn_cp_size": 1,
+    "speculative_algorithm": null,
+    "enable_hierarchical_cache": true,
+    "hicache_ratio": 11.0,
+    "hicache_host_memory_mode": "cache",
+    "hicache_write_policy": "write_through",
+    "hicache_io_backend": "kernel",
+    "hicache_storage_backend": null,
+    "enable_metrics": true,
+    "enable_cache_report": true,
+    "memory_usage": {
+      "weight": 0.977,
+      "kvcache": 0.087,
+      "startup_available": 3.066,
+      "token_capacity": 7642,
+      "token_capacity_swa": null,
+      "graph": {
+        "prefill": 0.0,
+        "decode": 0.0,
+        "target_verify": 0.0,
+        "draft_prefill": 0.0,
+        "draft_decode": 0.0,
+        "draft_extend": 0.0
+      }
+    },
+    "model_info": {
+      "model_path": "<home>/models/Qwen2.5-0.5B-Instruct",
+      "tokenizer_path": "<home>/models/Qwen2.5-0.5B-Instruct",
+      "is_generation": true,
+      "weight_version": "default"
+    }
+  },
+  "metrics": {
+    "before": "# HELP sglang:hicache_backup_duration_seconds Time taken to back up KV cache from GPU to local host DRAM (L2) in seconds, per merged write op. Covers all D->H backups regardless of --hicache-write-policy. Distinct from the host-to-storage (L3) sglang:backuped_tokens_total.\n# TYPE sglang:hicache_backup_duration_seconds histogram\nsglang:hicache_backup_duration_seconds_sum{cache_type=\"UnifiedRadixCache\"} 0.004841856017708778\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.001\"} 3.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.002\"} 3.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.005\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.01\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.02\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.05\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.1\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.2\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"0.5\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"1.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"2.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"5.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"10.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"30.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"60.0\"} 4.0\nsglang:hicache_backup_duration_seconds_bucket{cache_type=\"UnifiedRadixCache\",le=\"+Inf\"} 4.0\nsglang:hicache_backup_duration_seconds_count{cache_type=\"UnifiedRadixCache\"} 4.0\n# HELP sglang:hicache_host_used_tokens Number of tokens currently used in the host KV cache.\n# TYPE sglang:hicache_host_used_tokens gauge\nsglang:hicache_host_used_tokens{engine_type=\"unified\",model_name=\"<home>/models/Qwen2.5-0.5B-Instruct\",moe_ep_rank=\"0\",pp_rank=\"0\",tp_rank=\"0\"} 145.0\n# HELP sglang:hicache_host_total_tokens Total capacity of the host KV cache in tokens.\n# TYPE sglang:hicache_host_total_tokens gauge\nsglang:hicache_host_total_tokens{engine_type=\"unified\",model_name=\"<home>/models/Qwen2.5-0.5B-Instruct\",moe_ep_rank=\"0\",pp_rank=\"0\",tp_rank=\"0\"} 84063.0\n# HELP sglang:hicache_dropped_tokens_total The number of device KV tokens destroyed without a host backup, by pool (kv, swa, ...) and reason (e.g. write-back backup failure under host memory pressure).\n# TYPE sglang:hicache_dropped_tokens_total counter\nsglang:hicache_dropped_tokens_total{cache_type=\"UnifiedRadixCache\",pool=\"kv\",reason=\"host_pressure\"} 0.0\n# HELP sglang:hicache_backup_tokens_total The number of tokens backed up from GPU to local host DRAM (L2), by host pool (kv, swa, mamba, ...). Covers all D->H backups regardless of --hicache-write-policy. Distinct from the host-to-storage (L3) sglang:backuped_tokens_total.\n# TYPE sglang:hicache_backup_tokens_total counter\nsglang:hicache_backup_tokens_total{cache_type=\"UnifiedRadixCache\",pool=\"kv\"} 145.0\n# HELP sglang:hicache_backup_bytes_total Bytes backed up from GPU to local host DRAM (L2), all pools combined, including draft/sidecar transfers that the token counter excludes. Divided by the rate of hicache_backup_duration_seconds_sum, gives the achieved D->H bandwidth while transferring.\n# TYPE sglang:hicache_backup_bytes_total counter\nsglang:hicache_backup_bytes_total{cache_type=\"UnifiedRadixCache\"} 1.78176e+06\n",
+    "counters_before": {
+      "sglang:hicache_backup_tokens_total": 145.0,
+      "sglang:evicted_tokens_total": null,
+      "sglang:load_back_tokens_total": null,
+      "sglang:load_back_bytes_total": null
+    }
+  },
+  "eviction": {
+    "device_token_capacity": 7642,
+    "target_total_tokens": 8407,
+    "request_tokens": 1024,
+    "num_requests": 9
+  },
+  "measurement_plan": [
+    [
+      "P",
+      "R"
+    ],
+    [
+      "P",
+      "R"
+    ],
+    [
+      "R",
+      "P"
+    ],
+    [
+      "P",
+      "R"
+    ],
+    [
+      "R",
+      "P"
+    ],
+    [
+      "P",
+      "R"
+    ],
+    [
+      "R",
+      "P"
+    ],
+    [
+      "R",
+      "P"
+    ]
+  ],
+  "trials": [
+    {
+      "trial": 0,
+      "order": [
+        "P",
+        "R"
+      ],
+      "results": {
+        "P": {
+          "rid": "P-20261026T090052Z-000",
+          "cache_salt": "cold-20261026T090052Z-000",
+          "input_token_count": 4224,
+          "ttft_s": 0.3355558119947091,
+          "total_s": 0.33565237998845987,
+          "output_token_events": 1,
+          "prompt_tokens": 4224,
+          "completion_tokens": 1,
+          "cached_tokens": 0,
+          "cached_tokens_details": {
+            "device": 0,
+            "host": 0,
+            "storage": 0
+          }
+        }
+      }
+    }
+  ],
+  "error": "Response ended prematurely",
+  "finished_at_utc": "2026-10-26T09:01:21.510877+00:00"
+}

@@ -4,8 +4,8 @@
 > 回载与策略实验。对应 SGLang 的 HiCache（`--enable-hierarchical-cache`）
 > 与 vLLM KV offloading；HPC 的 memory hierarchy 功力在 AI 推理场景的直接迁移。
 
-> **项目状态**：**active**（研究演进中；尚无完成审计的 GPU 结果包，亦无已
-> 合入的上游 PR）。权威状态注册表见
+> **项目状态**：**active**（研究演进中；已有完成审计的单卡 L2 结果包，
+> 尚无已合入的上游 PR）。权威状态注册表见
 > [open-infra-ai/open-infra-ai](https://github.com/open-infra-ai/open-infra-ai)。
 
 本仓是研究孵化器：把上游源码阅读收敛为可运行实验、可审计结果和上游贡献。
@@ -42,10 +42,14 @@
 本仓原计划满足以下条件后才转公开；2026-10-25 经所有者决定提前公开，
 各条现状诚实标注：
 
-1. 完成至少一组真实 GPU 实验，并通过结果包审计——**未达成**：客户端、
-   结果审计器与离线测试就绪，尚无真实 GPU 运行。
-2. 固定上游 commit、模型、硬件、启动参数和原始日志——**部分就绪**：审计器
-   已要求记录 40 位 SGLang commit，真实运行尚未发生。
+1. 完成至少一组真实 GPU 实验，并通过结果包审计——**已达成（2026-10-26）**：
+   WSL2 / RTX 3060 Laptop / Qwen2.5-0.5B，6 轮，L2 回载 72.3 ms vs 冷
+   prefill 338.0 ms，R/P 中位比 0.215，审计通过；证据见
+   [`bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/`](bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/)。
+   该结果只描述该机、该模型、该配置，不是 #31600 复现。
+2. 固定上游 commit、模型、硬件、启动参数和原始日志——**已就绪**：结果包记录
+   40 位 SGLang commit、模型哈希、GPU、启动参数、原始响应与 Prometheus 指标；
+   本次运行另含一个未合入上游 WSL2 修复的本地补丁，已在证据中标注。
 3. 至少一个外部可验证的上游结果——**部分达成**：
    [PR #36116](https://github.com/sgl-project/sglang/pull/36116) 处于 OPEN、
    [PR #36115](https://github.com/sgl-project/sglang/pull/36115) 未合入关闭、
@@ -72,7 +76,7 @@ SGLang 自 [PR #35081](https://github.com/sgl-project/sglang/pull/35081) 起默�
 
 | 优先级 | 任务 | 当前边界 |
 |---|---|---|
-| 1 | 单卡 HiCache L2 回载微基准 | 脚本已完成离线测试，尚无真实 GPU 数据；不是 #31600 复现 |
+| 1 | 单卡 HiCache L2 回载微基准 | 2026-10-26 已完成 6 轮审计结果（0.5B / WSL2）；不是 #31600 复现 |
 | 2 | 按原配置复现 #31600 | 需要 GLM-5.2、FP8、EAGLE、L2+Mooncake、TP/CP，并比较 accept rate、decode throughput 和总时长 |
 | 3 | HiCache 多卡同步与 host 内存局部性 profiling | 目前只是测量方向；不能先验宣称 all-reduce 或 NUMA 是瓶颈 |
 | 4 | L3 prefetch 失败分类可观测性 | 已有大量传输指标；剩余候选是有限枚举的失败原因和结构化日志 |
@@ -96,7 +100,10 @@ SGLang 自 [PR #35081](https://github.com/sgl-project/sglang/pull/35081) 起默�
   L2 命中验证、指标交叉验证和 JSON 结果包；
 - [x] 2026-08-28：建立根级 Git 边界、客户端依赖与 `make test` 入口；
 - [x] 2026-08-28：加入结果包审计器，正式运行要求记录 40 位 SGLang commit；
-- [ ] 在真实 GPU 上运行并审计单卡 L2 微基准；
+- [x] 2026-10-26：新增 CPU-only CI（`make test`，14 项离线测试）；
+- [x] 2026-10-26：完成并审计单卡 L2 基线（WSL2 / 3060 / Qwen2.5-0.5B，6 轮，
+  R/P 中位比 0.215）；定位 WSL2 `cudaHostRegister` 指针非恒等导致的 HiCache
+  回载崩溃，并按上游 PR #43375 应用本地补丁；
 - [ ] 若要回应 #31600，另行搭建尽量匹配原报告的多卡 EAGLE/L3 实验；
 - [x] 已提交 [PR #36115](https://github.com/sgl-project/sglang/pull/36115)；本轮未重复审核；
 - [x] 已提交 [PR #36116](https://github.com/sgl-project/sglang/pull/36116)；本轮未重复审核；

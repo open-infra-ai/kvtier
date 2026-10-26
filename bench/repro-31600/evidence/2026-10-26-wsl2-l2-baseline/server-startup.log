@@ -1,0 +1,6 @@
+[2026-10-26 17:17:46] Load weight end. elapsed=0.59 s, type=Qwen2ForCausalLM, avail mem=3.99 GB, mem usage=0.98 GB.
+[2026-10-26 17:17:47] KV Cache is allocated. dtype: torch.bfloat16, #tokens: 33744, K size: 0.19 GB, V size: 0.19 GB
+[2026-10-26 17:17:47] max_total_num_tokens=33744, chunked_prefill_size=2048, max_prefill_tokens=16384, max_running_requests=2048, context_len=32768, available_gpu_mem=2.69 GB
+[2026-10-26 17:17:47] Allocating kv hierarchical KV host pool: 94484 tokens, 1.16 GB host memory.
+[2026-10-26 17:17:47] HiCache host allocator: using torch pin_memory (cudaHostAlloc) instead of cudaHostRegister; this is required for GPU-direct access to pinned host memory on WSL2.
+[2026-10-26 17:17:55] INFO:     Uvicorn running on http://127.0.0.1:30000 (Press CTRL+C to quit)

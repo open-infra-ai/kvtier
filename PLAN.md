@@ -1,6 +1,6 @@
 # kvtier 后续开发计划
 
-更新时间：2026-08-28
+更新时间：2026-10-26
 
 ## 目标与边界
 
@@ -23,7 +23,8 @@
 - [x] 固定基准客户端 `requests` 依赖。
 - [x] 增加结果包审计器，校验服务配置、W/E/R/P 路径、命中条件、TTFT 比值和计数器增量。
 - [x] 正式基准要求传入 40 位 SGLang commit SHA。
-- [x] 离线测试 14 项通过；真实 GPU 基准尚未运行。
+- [x] 离线测试 14 项通过（2026-10-26 由 CPU-only CI 持续验证）；真实 GPU 基准已于
+  2026-10-26 运行并通过审计。
 - [x] 2026-08-28（P0-1）：审阅全部未跟踪文件；`.gitignore` 覆盖 `.venv/`、`models/`、
   `results/`、`third_party/`、`__pycache__` 已确认完整；完成根级初始本地提交，
   未建远程、未推送（远程归属待用户决定）。
@@ -36,6 +37,11 @@
 - [x] 2026-08-30：目录整理——`kv-tiering/` 摊平至根目录（docs/bench/patches 上提），
   贡献草稿归入 `contrib/minisgl/` 并补状态 README，根 README 与 kv-tiering README 合并
   为一本；仅本地提交，未推送。
+- [x] 2026-10-26：完成并审计单卡 L2 基线（WSL2 / RTX 3060 / Qwen2.5-0.5B，
+  6 轮，R/P 中位比 0.215）。定位 WSL2 `cudaHostRegister` 地址非恒等导致 HiCache
+  回载 illegal access，按上游 PR #43375 应用本地补丁并保存补丁哈希；失败运行与
+  指针诊断一并留档。证据：
+  [`bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/`](bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/)。
 
 ## 后续任务
 
@@ -54,41 +60,39 @@
 
 ### P1：本机服务与正确性门禁
 
-> 阻塞说明（2026-08-28 更新）：服务端 sglang 已安装成功（rustc 1.98.0 修复 Rust
-> 构建后）；dry-run 通过。当前唯一阻塞是 dGPU 有 ~3.4 GB 图形占用导致空闲显存
-> 不足（BF16 需 ~4.6 GB 空闲），等用户释放后启动服务。
->
-> 交接记录（2026-08-28）：旧机器上 `Qwen2.5-1.5B-Instruct` 已下载完成
-> （`~/models/Qwen2.5-1.5B-Instruct`，2.9 GB）；sglang 服务端 editable 安装
-> **失败于 Rust 构建**——rustc 1.90.0 < 依赖要求的 1.92，修复与重试命令见
-> [`bench/repro-31600/ENVIRONMENT.md`](bench/repro-31600/ENVIRONMENT.md)
-> "服务端"一节。模型与 venv 均为机器本地产物、不随仓库走，新环境按 ENVIRONMENT.md
-> 重建。仓库侧 P0 已全部完成并入库。
+> 状态（2026-10-26）：已解除阻塞并完成。原 1.5B BF16 在 Windows 桌面占用
+> ~1.97 GB 显存后无法为 KV cache 留出最低预算；改用同家族 0.5B BF16 后服务、
+> 健康检查、配置校验、dry-run 与正式运行均完成。SGLang 旧 commit 在 WSL2 上
+> 存在 host 指针非恒等问题，已按未合入的上游 PR #43375 打本地补丁并记录。
 
-- [ ] 选择适配 RTX 3060 Laptop 6GB 的模型并记录绝对路径、权重 dtype 和上下文长度。
-  - 当前选定：`Qwen2.5-1.5B-Instruct`（HF 格式，约 3 GB，目标路径 `~/models/`）。
+- [x] 选择适配 RTX 3060 Laptop 6GB 的模型并记录路径、权重 dtype 和上下文长度。
+  - 实际：`~/models/Qwen2.5-0.5B-Instruct`（BF16，988,097,824 B，sha256 记录于
+    `ENVIRONMENT.md`）；1.5B 原定模型保留但未用于本次运行。
   - 验收：模型路径、GPU 型号、驱动和启动参数可复核；不把模型下载或云 GPU 费用默认纳入本地任务。
-- [ ] 用 `run_server.sh` 启动 HiCache 单卡服务，检查 `/health`、`/server_info`、
+- [x] 用 `run_server.sh` 启动 HiCache 单卡服务，检查 `/health`、`/server_info`、
   `/model_info` 和 `/metrics`。
   - 验收：TP/DP/PP/attention CP 均为 1，启用 hierarchical cache、cache report、
     metrics 和 `write_through`，未启用 speculative decoding 或 L3 storage。
-- [ ] 先运行 `workload.py --dry-run`，再用小规模参数做服务 smoke test。
+- [x] 先运行 `workload.py --dry-run`，再用小规模参数做服务 smoke test。
   - 验收：SSE 有正常结束事件和输出 token，token 数、cache namespace 和服务配置均通过门禁。
 
 ### P2：单卡 L2 证据闭环
 
-- [ ] 使用固定的 SGLang commit 和模型运行单卡 L2 微基准，保存完整 JSON 结果包。
-  - 建议命令：`python3 workload.py --sglang-commit <40-char-commit> --output-dir results`。
-- [ ] 用 `make audit RESULT=results/results-<UTC>.json` 审计结果。
+- [x] 使用固定的 SGLang commit 和模型运行单卡 L2 微基准，保存完整 JSON 结果包。
+  - 运行：commit `6afee75f9...` + 本地 PR #43375 补丁；6 轮；结果包
+    `evidence/2026-10-26-wsl2-l2-baseline/results.json`。
+- [x] 用 `make audit RESULT=results/results-<UTC>.json` 审计结果。
   - 验收：结果为 `status=complete`；R 的 host 命中率、P 的零命中、backup/eviction/load-back
     counter 增量和配对 TTFT 数据全部通过。
-- [ ] 编写一次实验报告，包含硬件、软件 commit、模型、完整启动命令、参数、原始结果、
+- [x] 编写一次实验报告，包含硬件、软件 commit、模型、完整启动命令、参数、原始结果、
       统计方法、结论和限制。
   - 验收：报告只描述本机本次运行；不把 R/P 比值写成 #31600 复现或通用性能结论。
 
 ### P3：根据数据选择优化方向
 
-- [ ] 先检查结果中的 L2 命中率、驱逐量、load-back counter、TTFT 分布和失败原因。
+- [x] 先检查结果中的 L2 命中率、驱逐量、load-back counter、TTFT 分布和失败原因。
+  - 2026-10-26：host 命中 4223/4224；backup 88,625 tokens、eviction 80,304 tokens、
+    load-back 25,338 tokens / 311 MB；首个 R 失败根因为 WSL2 host 指针非恒等。
 - [ ] 优先候选：L3 prefetch 失败原因的有限枚举与结构化可观测性；先核对上游 `main`
       和重复 issue/PR。
 - [ ] 只有在 correctness 与带宽基线建立后，才评估 NUMA 感知、局部性优化或 KV 换出压缩。
@@ -96,8 +100,10 @@
 
 ### P4：上游与作品集交付
 
-- [ ] 将已验证的最小问题、复现命令、原始日志、预期/实际行为和有限修复方案整理为上游
-  issue/PR 材料。
+- [x] 将已验证的最小问题、复现命令、原始日志、预期/实际行为和有限修复方案整理为上游
+  issue/PR 材料（本地证据包已就绪）。
+- [ ] 把 WSL2 `cudaHostRegister` 指针非恒等的复现与指针诊断作为 PR #43375 的补充证据；
+  公开发布前需所有者确认，并重新核对上游状态与重复工作。
 - [ ] 为每个完成的实验保留一张架构图、一条调用链、核心数据结构、可运行命令和面试问题。
 - [ ] 上游状态、重复工作和当前 `main` 在公开评论或 PR 前重新核对。
 - [ ] 提交和推送必须得到用户明确指示；共享工作区只暂存本任务文件。
@@ -117,3 +123,5 @@ python3 validate_results.py results/results-<UTC>.json
 - 不在没有真实 GPU 结果和审计包时宣称性能提升。
 - 不把本机单卡 L2 微基准写成 #31600 完整复现。
 - 不默认下载大模型、租用云 GPU、修改 `third_party` 上游源码或发布 PR。
+  若为复现上游未合入修复而必须打补丁：保存 patch 与 sha256，在证据中标注
+  “基础 commit + 补丁”，并优先在补丁合入后以新 commit 重跑。
